@@ -4,8 +4,11 @@
   rustPlatform,
   fetchFromGitHub,
 
+  # The nixpkgs instance this flake pins. Everything the FOD output hashes depend on comes from here,
+  # so they stay valid no matter which nixpkgs the rest of the package is built against.
+  fodPkgs,
+
   # OpenDeck specific dependencies
-  deno,
   wrapGAppsHook3,
   systemd,
   libayatana-appindicator,
@@ -35,7 +38,6 @@
   libxrandr,
   libxi,
   autoPatchelfHook,
-  jq,
 }:
 
 let
@@ -57,6 +59,9 @@ let
   frontendHash = "sha256-/5sVftuibGPNoG2pXYqJxHLGM16inKf3AiFMgYym760=";
   pluginDenoDepsHash = "sha256-iAp2XnmXGPsy13bRbplFk+s30IZ8KWbsBos/Ljj544I=";
 
+  # Deno version used for the FODs. The plugins build also has to use it to read the pluginDenoDeps cache.
+  inherit (fodPkgs) deno;
+
   # src info that is inherited by the frontend, plugins, plugin deps, and the actual OpenDeck derivation
   src = fetchFromGitHub {
     owner = "nekename";
@@ -67,7 +72,7 @@ let
 
   # The frontend derivation
   # We're building this as a FOD since it requires network access
-  frontend = stdenv.mkDerivation {
+  frontend = fodPkgs.stdenv.mkDerivation {
     pname = "opendeck-frontend";
     inherit version src;
 
@@ -120,7 +125,7 @@ let
   # However, the plugins' build.ts files have deno dependencies.
   # To avoid also having to build the plugins as FODs, we build only the deno dependencies here as a FOD.
   # These will then be used when building the plugins, letting the plugins compile without network access.
-  pluginDenoDeps = stdenv.mkDerivation {
+  pluginDenoDeps = fodPkgs.stdenv.mkDerivation {
     pname = "opendeck-plugin-deno-deps";
     inherit version src;
 
@@ -130,7 +135,7 @@ let
 
     nativeBuildInputs = [
       deno
-      jq
+      fodPkgs.jq
     ];
 
     # Cache dependencies of all plugins by running their build.ts files with the vendored deno.lock.
@@ -283,7 +288,6 @@ rustPlatform.buildRustPackage {
   inherit version src;
 
   nativeBuildInputs = [
-    deno
     wrapGAppsHook3
     pkg-config
     gobject-introspection

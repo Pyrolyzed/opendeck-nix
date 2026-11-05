@@ -14,7 +14,7 @@ Add the following input to your `flake.nix`:
 }
 ```
 
-**Please do not set `opendeck-nix.inputs.nixpkgs.follows = "nixpkgs";`**. You will end up with hash-mismatches.
+**Please do not set `opendeck-nix.inputs.nixpkgs.follows = "nixpkgs";`**. You will end up with hash-mismatches. The module builds OpenDeck against your system's nixpkgs anyway. The pinned nixpkgs is only used for the FODs.
 
 Enable OpenDeck:
 
@@ -36,6 +36,10 @@ This section documents some known issues specific to opendeck-nix. If you encoun
 ### Some plugins that run binaries are not working
 
 This is a NixOS limitation. See [this issue](https://github.com/Kitt3120/opendeck-nix/issues/6) for more information.
+
+### Blank window and blank Stream Deck when using `packages.*.opendeck` directly
+
+The packages exposed by this flake are built against the nixpkgs pinned in `flake.lock`. If your system's graphics driver needs a newer glibc than that, WebKitGTK crashes with `Could not create default EGL display: EGL_BAD_PARAMETER`. Use the module or `overlays.default` instead, which build against your system's nixpkgs.
 
 ## Why?
 
