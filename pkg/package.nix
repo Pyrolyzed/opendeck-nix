@@ -40,8 +40,8 @@
 
 let
   # OpenDeck
-  version = "2.14.0";
-  srcHash = "sha256-2zI1asMPLxllKaDaCaGbIZ1PwiQJCCsiuyG/gUKe0Mk=";
+  version = "2.14.2";
+  srcHash = "sha256-DNgOH5d7c4Y6y8Wz8Bcc8/I3S9IAyLav4OfKgwT/i/c=";
 
   # Additional output hashes of external cargo git dependencies that need to be specified
   cargoOutputHashes = {
@@ -50,11 +50,11 @@ let
     "streamdeck-strip-render-0.1.0" = "sha256-gKyb3dqxTSdvkXzMNshj1N8oJgrUwQSMjvwrjarn7UY=";
   };
   pluginCargoOutputHashes = {
-    "enigo-0.6.1" = "sha256-zcxgs30L5dQiq/tJNUla6rwZvS2FGOc0O7tTDKifLPo=";
+    "enigo-0.6.1" = "sha256-r7V+kUK7wxLPmyHnW61XkRpieNHJtBs47GdPbTaP3lQ=";
   };
 
   # Fixed Output Derivation (FOD) output hashes
-  frontendHash = "sha256-+RSw3zMU39PdEhCPlKTexC8bA2UDS5qqW5NZNQ7MyoA=";
+  frontendHash = "sha256-/5sVftuibGPNoG2pXYqJxHLGM16inKf3AiFMgYym760=";
   pluginDenoDepsHash = "sha256-iAp2XnmXGPsy13bRbplFk+s30IZ8KWbsBos/Ljj544I=";
 
   # src info that is inherited by the frontend, plugins, plugin deps, and the actual OpenDeck derivation
