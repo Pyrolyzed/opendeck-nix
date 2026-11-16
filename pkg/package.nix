@@ -30,6 +30,7 @@
   pango,
   webkitgtk_4_1,
   openssl,
+  libgit2,
 
   # Plugin dependencies
   libxkbcommon,
@@ -309,6 +310,8 @@ rustPlatform.buildRustPackage {
     pango
     webkitgtk_4_1
     openssl
+    # nixpkgs cargo-setup-hook sets LIBGIT2_NO_VENDOR=1, so libgit2-sys needs the system libgit2
+    libgit2
   ];
 
   # The Rust code is in the src-tauri subdirectory
